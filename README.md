@@ -227,3 +227,83 @@ No external CRAN packages are required.
 ```bash
 git clone https://github.com/your-username/ABHRS_R_Prototype.git
 cd ABHRS_R_Prototype
+
+
+### Open the main script
+
+The repository should contain a main script, for example:
+
+abh_rs_core.R
+
+Open this file in RStudio or any R console.
+
+###Running the Project
+
+From an R console (inside the project folder):
+On completion you should see output similar to:
+
+Round 1 target_ring_size = 4 L = ...
+Round 2 target_ring_size = 5 L = ...
+...
+Credential chain check for u1: TRUE
+Verification result for Sigma_u1_t1: TRUE
+Tuned parameters after neural co design:
+$target_ring_size
+[1] ...
+$decoy_ratio
+[1] 0.5
+
+This indicates that:
+
+*The certificate validation predicate succeeded for user u1.
+
+*The ABHRS-style signature was verified correctly.
+
+*The neural co-design loop ran for several rounds and produced a tuned parameter vector.
+
+### Testing and Extending
+#Change the access policy:
+
+You can run small experiments by editing the script and re-sourcing it.
+
+Examples
+
+policy_nurse <- function(Au) {
+  isTRUE(Au$role == "nurse")
+}
+
+#Modify the initial parameter vector:
+
+theta_star <- list(
+  target_ring_size = 6,
+  decoy_ratio      = 0.6
+)
+
+# Add new messages and workloads:
+workload_distribution$messages <- c(
+  "read_record",
+  "update_record",
+  "sign_note",
+  "export_summary"
+)
+
+### Contributing
+
+Contributions that improve clarity, documentation, or experimental structure are welcome.
+Suggestions include:
+
+1. Cleaner separation of configuration and core logic
+
+2. Richer policy examples for OSNs and e-health scenarios
+
+3. Stronger instrumentation for analysing toy leakage and cost metrics
+
+4. Hooks for replacing the placeholders with real cryptographic libraries in other languages
+
+If you open a pull request, please:
+
+1. Keep the code readable and comment major steps
+
+2. Preserve the distinction between mock crypto and any real primitives
+
+3. Avoid adding external dependencies unless they clearly support analysis
